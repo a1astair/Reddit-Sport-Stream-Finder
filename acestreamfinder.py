@@ -3,7 +3,7 @@
 
 import sys, re, praw
 def get_stream(r, title_id):
-    ace = re.compile('acestream://')
+    ace = re.compile('acestream:\/\/')
 
     submission = r.get_submission(submission_id=title_id)
     
