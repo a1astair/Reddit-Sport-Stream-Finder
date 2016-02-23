@@ -2,8 +2,11 @@
 # -*- coding:utf-8 -*-
 
 import sys, re, praw
+
 def get_stream(r, title_id):
-    ace = re.compile('acestream:\/\/')
+
+    
+    ace = re.compile('acestream:\/\/.+')
 
     submission = r.get_submission(submission_id=title_id)
     
@@ -18,9 +21,9 @@ def get_stream(r, title_id):
         
         #AceStream check 
         if m:
-            print sys.argv[0], ": Found AceStream link!", m2.group(0)
+            print sys.argv[0], ": Found AceStream link!", m.group(0)
             print sys.argv[0], ": Loading link"
-            print(m2.group(0))
+            print(m.group(0))
             sys.exit()
             
     sys.exit()
