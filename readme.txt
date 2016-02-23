@@ -1,1 +1,0 @@
-This script searches through the soccer subreddit(will expand to more subreddits) based on the team you give. It then searches for all urls and asks the user if they would like to load them, if it finds a youtube link it automatically loads that
