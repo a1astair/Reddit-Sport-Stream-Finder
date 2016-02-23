@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-import sys, re, praw
+import sys, re, praw, webbrowser
 
 def get_stream(r, title_id):
 
@@ -24,6 +24,7 @@ def get_stream(r, title_id):
             print sys.argv[0], ": Found AceStream link!", m.group(0)
             print sys.argv[0], ": Loading link"
             print(m.group(0))
+            webbrowser.open_new_tab(m.group(0))
             sys.exit()
             
     sys.exit()
