@@ -1,10 +1,12 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-import sys, re, praw, webbrowser
+import sys, re, praw
 def get_stream(r, title_id):
     ace = re.compile('acestream://')
 
+    submission = r.get_submission(submission_id=title_id)
+    
     #Flatten comments
     comments = praw.helpers.flatten_tree(submission.comments)
     
@@ -15,7 +17,7 @@ def get_stream(r, title_id):
         m = re.search(ace, comment.body)
         
         #AceStream check 
-        if m2:
+        if m:
             print sys.argv[0], ": Found AceStream link!", m2.group(0)
             print sys.argv[0], ": Loading link"
             print(m2.group(0))
