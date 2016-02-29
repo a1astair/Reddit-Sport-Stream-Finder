@@ -9,7 +9,7 @@ def request_handler():
     #Receives the information from the user(Main function)
     # Connect to reddit and download the subreddit front page
     r = praw.Reddit(user_agent='Sport Streams v1.3 by /u/a1ibs')
-    post_id = team_search(r, 'all', 'leo')
+    post_id = team_search(r, 'nhlstreams', 'thread')
     link = get_stream(r, post_id)
     return link
     
