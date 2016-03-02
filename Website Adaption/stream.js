@@ -25,7 +25,8 @@ $(document).ready(function() {
 	            $('#answer').replaceWith("<a href ="+ response + " target='_blank'>" + response + "</a>");
             },
             error: function(xhr) {
-	            //Do Something to handle error
+	            console.log(xhr)
+	            $('#answer').replaceWith("<p>Error! Please Try Again Later</p>");
             }
         });
         return false;

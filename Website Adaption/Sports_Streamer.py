@@ -67,7 +67,7 @@ def get_stream(r, title_id, user_type):
                 webbrowser.open_new_tab(m.group(0))
                 sys.exit()
            '''
-   return "No Link Sorry"
+    return "No Link Sorry"
 
 #Searches the requested subreddit for the title that has the users specified team    
 def team_search(r,sub, team):
