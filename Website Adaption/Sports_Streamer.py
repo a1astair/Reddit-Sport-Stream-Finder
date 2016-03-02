@@ -1,30 +1,34 @@
 #!flask/bin/python
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 import re, praw
 import traceback
-#import urllib3.contrib.pyopenssl
-#urllib3.contrib.pyopenssl.inject_into_urllib3()
 
 app = Flask(__name__)
 
 @app.route('/')
 def request_handler():
-    alink = "Sorry No Link"
     #Receives the information from the user(Main function)
+    
+    subreddit = request.args.get('subreddit')
+    team1 = request.args.get('team')
+    the_type = request.args.get('type')
+    
     # Connect to reddit and download the subreddit front page
-  
-    r = praw.Reddit(user_agent='Sport Streams v1.3 by /u/a1ibs')
+    r = praw.Reddit(user_agent='Sport Streams v2.0 by /u/a1ibs')
+    
+    #Added these try and excepts to fix some pyopenssl errors
     try:
-        post_id = team_search(r, 'nhlstreams', 'flames')  
+        post_id = team_search(r, subreddit, team1)  
     except Exception as ex:
         traceback.print_exc()
     try:
-        alink = get_stream(r, post_id)
+        alink = get_stream(r, post_id, the_type)
     except Exception as ex:
         traceback.print_exc()
-    return alink.encode('utf-8') 
+        
+    return alink
    
-def get_stream(r, title_id):
+def get_stream(r, title_id, user_type):
     check = 0
     #John Gruber's regex to find URLs in plain text, converted to Python/Unicode
     #See: http://daringfireball.net/2010/07/improved_regex_for_matching_urls  
@@ -33,10 +37,6 @@ def get_stream(r, title_id):
     youtube = re.compile('(?:https?:\/\/)?(?:www\.)?youtu\.?be(?:\.com)?\/?.*(?:watch|embed)?(?:.*v=|v\/|\/)([\w\-_]+)\&?')
     
     ace = re.compile('acestream:\/\/[a-zA-Z0-9]+')
-    
-    #Give the user a choice of streams
-    user_type = 'y' 
-    #raw_input('What kind of stream would you like (youtube/url/acestream)?(y/u/a)')
         
     submission = r.get_submission(submission_id=title_id)
     
@@ -56,6 +56,8 @@ def get_stream(r, title_id):
         m2 = p2.search(comment.body)
         if m2:
             return m2.group(0)
+            
+            #This will be implemented for later uses to work with the website
             '''
             check = 1
             print sys.argv[0], ": Found ", m.group(0)
@@ -65,9 +67,7 @@ def get_stream(r, title_id):
                 webbrowser.open_new_tab(m.group(0))
                 sys.exit()
            '''
-        #else:
-         #   return 'failed'
-    #return finder
+   return "No Link Sorry"
 
 #Searches the requested subreddit for the title that has the users specified team    
 def team_search(r,sub, team):
@@ -81,11 +81,7 @@ def team_search(r,sub, team):
         
         #Once found call get_stream otherwise the program will keep looking and eventually quit
         if m:
-            #print sys.argv[0], ": Found it!", submission.title
-            #print sys.argv[0], ": Working on finding stream"
-            #return reddit object and the submission id
             return submission.id
-    #print "Error: No thread found with that team, please try again"
 
 if __name__ == '__main__':
     app.run()
