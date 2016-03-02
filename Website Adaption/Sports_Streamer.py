@@ -14,15 +14,15 @@ def request_handler():
     the_type = request.args.get('type')
     
     # Connect to reddit and download the subreddit front page
-    r = praw.Reddit(user_agent='Sport Streams v2.0 by /u/a1ibs')
+    r = praw.Reddit(user_agent='Sport Streams v2.1 by /u/a1ibs')
     
     #Added these try and excepts to fix some pyopenssl errors
     try:
-        post_id = team_search(r, subreddit, team1)  
+        post_id = team_search(r, subreddit.lower(), team1.lower())  
     except Exception as ex:
         traceback.print_exc()
     try:
-        alink = get_stream(r, post_id, the_type)
+        alink = get_stream(r, post_id, the_type.lower())
     except Exception as ex:
         traceback.print_exc()
         
