@@ -8,23 +8,15 @@ app = Flask(__name__)
 @app.route('/')
 def request_handler():
     #Receives the information from the user(Main function)
-    
-    subreddit = request.args.get('subreddit')
+    asubreddit = request.args.get('subreddit')
     team1 = request.args.get('team')
-    the_type = request.args.get('type')
+    the_type = request.args.get('type') 
     
     # Connect to reddit and download the subreddit front page
     r = praw.Reddit(user_agent='Sport Streams v2.1 by /u/a1ibs')
     
-    #Added these try and excepts to fix some pyopenssl errors
-    try:
-        post_id = team_search(r, subreddit.lower(), team1.lower())  
-    except Exception as ex:
-        traceback.print_exc()
-    try:
-        alink = get_stream(r, post_id, the_type.lower())
-    except Exception as ex:
-        traceback.print_exc()
+    post_id = team_search(r, asubreddit, team1)  
+    alink = get_stream(r, post_id, the_type)
         
     return alink
    

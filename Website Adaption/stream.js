@@ -6,7 +6,7 @@ The application returns the link with the proper html to appear for the user
 -----------------------------------------------------------------------------------*/  
 
 $(document).ready(function() {
-    console.log("ready!");
+    //console.log("ready!");
     var submitButton = $("#submit");
     var subreddit = $("#subreddit");
     var team = $("#team");
@@ -22,10 +22,10 @@ $(document).ready(function() {
             },
             success: function(response) {
 	            //console.log("<a href ="+ response + "target='_blank'>" + response + "</a>");
-	            $('#answer').replaceWith("<a href ="+ response + " target='_blank'>" + response + "</a>");
+	            $('#answer').replaceWith("<p>answer</p><a href ="+ response + " target='_blank'>" + response + "</a>");
             },
             error: function(xhr) {
-	            console.log(xhr)
+	            //console.log(team.val())
 	            $('#answer').replaceWith("<p>Error! Please Try Again Later</p>");
             }
         });
