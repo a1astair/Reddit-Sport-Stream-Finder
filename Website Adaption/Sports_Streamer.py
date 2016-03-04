@@ -1,24 +1,29 @@
 #!flask/bin/python
 from flask import Flask, jsonify, request
-import re, praw
-import traceback
+import re, praw, json
 
 app = Flask(__name__)
 
+@app.route('/sport')
+def request_subreddit(): 
+
+    #Handles the drop down menu for the sports
+    asubreddit = request.args.get('subreddit')
+    all_teams = find_teams(asubreddit)
+    return json.dumps(all_teams)
+
 @app.route('/')
 def request_handler():
+    
     #Receives the information from the user(Main function)
     asubreddit = request.args.get('subreddit')
     team1 = request.args.get('team')
-    the_type = request.args.get('type') 
-    
-    # Connect to reddit and download the subreddit front page
-    r = praw.Reddit(user_agent='Sport Streams v2.1 by /u/a1ibs')
-    
-    post_id = team_search(r, asubreddit, team1)  
-    alink = get_stream(r, post_id, the_type)
-        
+    the_type = request.args.get('type')
+    r, post_id = team_search(asubreddit, team1) 
+    alink = get_stream(r, post_id, the_type)    
     return alink
+        
+    
    
 def get_stream(r, title_id, user_type):
     check = 0
@@ -48,7 +53,6 @@ def get_stream(r, title_id, user_type):
         m2 = p2.search(comment.body)
         if m2:
             return m2.group(0)
-            
             #This will be implemented for later uses to work with the website
             '''
             check = 1
@@ -60,11 +64,39 @@ def get_stream(r, title_id, user_type):
                 sys.exit()
            '''
     return "No Link Sorry"
-
-#Searches the requested subreddit for the title that has the users specified team    
-def team_search(r,sub, team):
+    
+#This function will find all the teams based on the Thread: posts in the subreddit
+def find_teams(sub):
+    p = re.compile(ur'^(?:Game|Match) Thread(?::|\s)([a-zA-Z ]+) (?:at|vs) ([a-z ]+) *(?:-? *((?:[0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9])((?:[a]|[p])[m]) *\/? *([a-z]*))?.*', re.IGNORECASE)
     post_limit = 25
-    p = re.compile(team, re.IGNORECASE) 
+    no_link = 1
+    teams = []
+    # Connect to reddit and download the subreddit front page
+    r = praw.Reddit(user_agent='Sport Streams v2.3 by /u/a1ibs')
+    post_limit = 25
+    submissions = r.get_subreddit(sub).get_hot(limit=post_limit)
+    
+    #Finds all the submissions based on the 'Thread:'
+    for submission in submissions:
+        m = p.search(submission.title)
+        if m:    
+            no_link = 0
+            #add the teams to the list of teams
+            teams.append(m.group(1))
+            teams.append(m.group(2))
+    
+    if no_link == 0:
+        return teams
+    else:
+        return "0"
+    
+#Searches the requested subreddit for the title that has the users specified team    
+def team_search(sub, team):
+
+    # Connect to reddit and download the subreddit front page
+    r = praw.Reddit(user_agent='Sport Streams v2.3 by /u/a1ibs')
+    post_limit = 25
+    p = re.compile(team, re.IGNORECASE)
     submissions = r.get_subreddit(sub).get_hot(limit=post_limit)
   
     #Process all the submissions from the specificed subreddit
@@ -73,7 +105,7 @@ def team_search(r,sub, team):
         
         #Once found call get_stream otherwise the program will keep looking and eventually quit
         if m:
-            return submission.id
+            return r,submission.id
 
 if __name__ == '__main__':
     app.run()

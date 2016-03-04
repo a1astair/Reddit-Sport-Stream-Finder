@@ -6,27 +6,55 @@ The application returns the link with the proper html to appear for the user
 -----------------------------------------------------------------------------------*/  
 
 $(document).ready(function() {
-    //console.log("ready!");
-    var submitButton = $("#submit");
     var subreddit = $("#subreddit");
-    var team = $("#team");
+    var submitSport = $('#submitsport');
+    submitSport.click(function() {
+        $.ajax({
+                url: "/stream/api/sport",
+                type: "get",
+                data: {
+	                subreddit: subreddit.val()
+                },
+                success: function(response) {
+                    var allTeams = jQuery.parseJSON(response)
+                    var i;
+                    $('#teamdisplay').replaceWith("<p>Team(s)</p>");
+                    $('#teams').replaceWith(
+                        $('<select id="teams" class="mytext"></select>')
+                    );
+	                for(i = 0; i < allTeams.length; i++) {
+	                    $('#teams').append(
+	                        $('<option></option>').val(allTeams[i]).html(allTeams[i])
+                        );
+                    }
+	                
+                },
+                error: function(xhr) {
+	                console.log(xhr)
+                }
+            });
+            return false;
+        });
     var type = $("#type");
+    var submitButton = $("#submit");
+    
     submitButton.click(function() {
         $.ajax({
             url: "/stream/api",
             type: "get",
             data: {
-	            subreddit: subreddit.val(),
-	            team: team.val(),
+                subreddit: subreddit.val(),
+	            team: $("#teams").val(),
 	            type: type.val()
             },
             success: function(response) {
-	            //console.log("<a href ="+ response + "target='_blank'>" + response + "</a>");
-	            $('#answer').replaceWith("<p>answer</p><a href ="+ response + " target='_blank'>" + response + "</a>");
+	            //Will add the submit button so they can resubmit instead of having to refresh the page to try again
+	            //$('#submit').replaceWith('<input type="Submit"value="Submit" id="submit">');
+	            $('#submit').replaceWith("<p>Enjoy!</p><a href ="+ response + " target='_blank'>" + response + "</a><br>");
             },
             error: function(xhr) {
-	            //console.log(team.val())
-	            $('#answer').replaceWith("<p>Error! Please Try Again Later</p>");
+	            console.log(xhr)
+	            $('#answer').replaceWith("<p>No Stream Found! Please Try Again Later</p>");
             }
         });
         return false;
