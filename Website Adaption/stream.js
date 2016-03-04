@@ -44,8 +44,7 @@ $(document).ready(function() {
             type: "get",
             data: {
                 subreddit: subreddit.val(),
-	            team: $("#teams").val(),
-	            type: type.val()
+	            team: $("#teams").val()
             },
             success: function(response) {
 	            //Will add the submit button so they can resubmit instead of having to refresh the page to try again
