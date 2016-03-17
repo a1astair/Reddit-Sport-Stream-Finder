@@ -2,31 +2,50 @@
 # -*- coding:utf-8 -*-
 
 import sys, re, praw, webbrowser
-
 def get_stream(r, title_id):
 
+    check = 0
+    
+    #John Gruber's regex to find URLs in plain text, converted to Python/Unicode
+    #See: http://daringfireball.net/2010/07/improved_regex_for_matching_urls  
+    url = re.compile(ur'(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:\'".,<>?\xab\xbb\u201c\u201d\u2018\u2019]))')
+    
+    youtube = re.compile('(?:https?:\/\/)?(?:www\.)?youtu\.?be(?:\.com)?\/?.*(?:watch|embed)?(?:.*v=|v\/|\/)([\w\-_]+)\&?')
     
     ace = re.compile('acestream:\/\/.+')
-
+    
+    #Give the user a choice of streams
+    user_type = raw_input('What kind of stream would you like (youtube/url/acestream)?(y/u/a)')
+        
     submission = r.get_submission(submission_id=title_id)
     
     #Flatten comments
     comments = praw.helpers.flatten_tree(submission.comments)
     
-    #Search through the comments until a link is found
-    for comment in comments:
-    
-        #Use regex to find a match 
-        m = re.search(ace, comment.body)
+    #Load proper regex
+    if user_type == 'y':
+        link = youtube
+    elif user_type == 'u':
+        link = url
+    elif user_type == 'a':
+        link = ace
         
-        #AceStream check 
+    for comment in comments:  
+        
+        #If a url is found ask the user if they would like to load it otherwise keep looking
+        m = re.search(link, comment.body)
         if m:
-            print sys.argv[0], ": Found AceStream link!", m.group(0)
-            print sys.argv[0], ": Loading link"
-            print(m.group(0))
-            webbrowser.open_new_tab(m.group(0))
-            sys.exit()
-            
+            check = 1
+            print sys.argv[0], ": Found ", m.group(0)
+            load = raw_input('Would you like to load this link?(y/n)')
+            if load == 'y':
+                print sys.argv[0], ": Loading link"
+                webbrowser.open_new_tab(m.group(0))
+                sys.exit()
+            else:
+                print sys.argv[0], ": Ok still looking"
+    if (check == 0):
+        print "Error: No link found with that type, please try again"
     sys.exit()
 
 #Searches the requested subreddit for the title that has the users specified team    
@@ -35,7 +54,7 @@ def team_search(sub, team):
     p = re.compile(team, re.IGNORECASE)
     
     # Connect to reddit and download the subreddit front page
-    r = praw.Reddit(user_agent='Ace Sport Streams v1.0 by /u/a1ibs') 
+    r = praw.Reddit(user_agent='Sport Streams v1.2 by /u/a1ibs') 
     submissions = r.get_subreddit(sub).get_hot(limit=post_limit)
   
     #Process all the submissions from the specificed subreddit
