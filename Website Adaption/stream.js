@@ -27,7 +27,8 @@ $(document).ready(function() {
 	                        $('<option></option>').val(allTeams[i]).html(allTeams[i])
                         );
                     }
-	                
+                    
+                    //$('#submit').replaceWith('<input type="Submit" value="Submit" id="submit">');
                 },
                 error: function(xhr) {
 	                console.log(xhr)
@@ -37,7 +38,6 @@ $(document).ready(function() {
         });
     var type = $("#type");
     var submitButton = $("#submit");
-    
     submitButton.click(function() {
         $.ajax({
             url: "/stream/api",

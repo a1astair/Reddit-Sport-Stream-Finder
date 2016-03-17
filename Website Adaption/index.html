@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<!--[if IE 8 ]><html class="no-js oldie ie8" lang="en"> <![endif]-->
+<!--[if IE 9 ]><html class="no-js oldie ie9" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html class="no-js" lang="en"> <!--<![endif]-->
+
+<head>
+
+	<!--- Basic Page Needs
+   ================================================== -->
+   <meta charset="utf-8">
+	<title>Stream Finder</title>
+   <meta name="Reddit Stream Finder" content="">  
+   <meta name="alastair" content="">
+
+   <!-- Mobile Specific Metas
+   ================================================== -->
+   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+   <!-- CSS
+   ================================================== -->
+   <link rel="stylesheet" href="../css/base.css">
+   <link rel="stylesheet" href="../css/vendor.css">
+   <link rel="stylesheet" href="../css/main.css">    
+
+   <!-- Modernizr
+   =================================================== -->
+   <script src="../js/modernizr.js"></script>
+
+   <!-- Favicons
+   =================================================== -->
+   <link rel="shortcut icon" href="../favicon.png" >
+    
+</head>
+    
+<body>
+
+   <!--[if lt IE 9]>
+   	<p class="browserupgrade">You are using an <strong>outdated</strong> browser. 
+   	Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+   <![endif]-->   
+
+   <!-- content-wrap -->
+   <div id="content-wrap">
+
+      <!-- main  -->
+      <main class="row">
+            <!-- Modal toggle -->
+	        <div class="modal-toggle">
+	            <a href="/" title="close" id="modal-close">close</a>
+	        </div>	 
+            <header class="site-header"> 
+            </header>
+
+            <div id="main-content" class="twelve columns">
+                <br>
+               <h1>Sports Stream Finder v2.5</h1>
+               <hr>
+               <a href="https://github.com/a1astair/Reddit-Sport-Stream-Finder" target="_blank"a>Source Code</a>
+                  <div align="center">
+                      <form id="form1">
+                        <p>Sport</p>
+                        <select id="subreddit" class="mytext">
+                            <option value="soccerstreams">Soccer</option>
+                            <option value="nhlstreams">Hockey(NHL)</option>
+                            <option value="nflstreams">Football(NFL)</option>
+                            <option value="mlbstreams">Baseball(MLB)</option>
+                        </select>
+                    <input type="button" value="Submit Sport" id="submitsport">
+                        <input style="display: none" id="teamdisplay">
+                        <select id="teams" class="mytext" style="display: none">
+                        </select>
+                       <input style="display: none" id="answer">
+                       <br>
+                    <input type="button" value="Submit" id="submit">
+                    </form>
+                </div>
+            </div><!-- /main-content form -->
+      </main>	      
+<!-- Script
+=================================================== -->
+<script src="../js/jquery-1.11.3.min.js"></script>
+<script src="../js/jquery-migrate-1.2.1.min.js"></script>
+<!--script src="http://maps.google.com/maps/api/js?v=3.13&amp;sensor=false"></script-->    
+<script src="../js/jquery.fittext.js"></script>
+<script src="../js/jquery.countdown.min.js"></script>
+<script src="../js/jquery.placeholder.min.js"></script>
+<script src="../js/owl.carousel.min.js"></script>
+<script src="../js/jquery.ajaxchimp.min.js"></script>
+<script src="../js/main.js"></script>    
+<script src="../js/stream.js"></script>    
+</body>
+</html>
