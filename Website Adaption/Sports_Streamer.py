@@ -57,12 +57,12 @@ def get_stream(r, title_id):
     
 #This function will find all the teams based on the Thread: posts in the subreddit
 def find_teams(sub):
-    p = re.compile(ur'^(?:Game|Match) Thread(?::|\s)([a-zA-Z ]+) (?:at|vs) ([a-z ]+) *(?:-? *((?:[0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9])((?:[a]|[p])[m]) *\/? *([a-z]*))?.*', re.IGNORECASE)
+    p = re.compile(ur'^(?:(?:Game)|(?:Match) Thread)(?:.*?)[:\]]\s?((?:[A-z]+\s)+)(?:(?:at)|(?:vs\.?)|(?:-))\s?((?:[A-z]+\s?)+)', re.IGNORECASE)
     post_limit = 25
     no_link = 1
     teams = []
     # Connect to reddit and download the subreddit front page
-    r = praw.Reddit(user_agent='Sport Streams v2.4 by /u/a1ibs')
+    r = praw.Reddit(user_agent='Sport Streams v2.5 by /u/a1ibs')
     post_limit = 25
     submissions = r.get_subreddit(sub).get_hot(limit=post_limit)
     
@@ -84,7 +84,7 @@ def find_teams(sub):
 def team_search(sub, team):
 
     # Connect to reddit and download the subreddit front page
-    r = praw.Reddit(user_agent='Sport Streams v2.4 by /u/a1ibs')
+    r = praw.Reddit(user_agent='Sport Streams v2.5 by /u/a1ibs')
     post_limit = 25
     p = re.compile(team, re.IGNORECASE)
     submissions = r.get_subreddit(sub).get_hot(limit=post_limit)
