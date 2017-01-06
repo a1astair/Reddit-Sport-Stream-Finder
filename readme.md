@@ -7,4 +7,4 @@ This script searches through a user defined subreddit and then looks for the mat
 This folder is the code I created to adapt the script for my website. I use WSGI as the interface between my web server and the web application. I am using Flask as the framework and be using JQuery and Ajax to query data to and from my program and website.
 This version does now work but there are still a lot of bugs.
 <br>
-Check it out at https://www.a1astair.ca/stream/
+Check it out at https://www.alastairbeaumont.com
